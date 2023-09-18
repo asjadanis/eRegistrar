@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class StudentController {
 
 
 
-    @GetMapping("/student")
+    @GetMapping("")
     public String searchStudents(@RequestParam(name = "search", required = false) String searchStr, Model model) {
 
         if (searchStr == null || searchStr.isEmpty()) {
@@ -34,10 +35,10 @@ public class StudentController {
         List<Student> students = (List<Student>) stdService.searchStd(searchStr);
         model.addAttribute("students", students);
         model.addAttribute("pageTitle", "Students");
-        return "students";
+        return "student";
     }
 
-    @GetMapping("/student/{studentId}")
+    @GetMapping("/{studentId}")
     public ResponseEntity<Student> getStudent(@PathVariable long studentId){
         Optional<Student> optionalStudent = stdService.getStudentById(studentId);
 
@@ -48,13 +49,13 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/student")
+    @PostMapping("")
     public ResponseEntity<Student> addStudent(@RequestBody Student student){
         stdService.addStudent(student);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @PutMapping("/student/{studentId}")
+    @PutMapping("")
     public ResponseEntity<Student> updateStudent(@PathVariable Long studentId, @RequestBody Student student){
         Optional<Student> existingStudent = stdService.getStudentById(studentId);
 
@@ -66,7 +67,7 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/student/{studentId}")
+    @DeleteMapping("")
     public ResponseEntity<Object> deleteStudent(@PathVariable Long studentId){
         Optional<Student> existingStudent = stdService.getStudentById(studentId);
 
