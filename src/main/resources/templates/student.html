@@ -37,7 +37,7 @@
       <td th:text="${student.enrollmentDate}"></td>
       <td th:text="${student.isInternational}"></td>
       <td>
-        <button class="btn btn-danger" th:attr="onclick='updateStudent(' + ${student.id} + ');'">Edit</button>
+        <button class="btn btn-info" th:attr="onclick='updateStudent(' + ${student.id} + ');'">Edit</button>
         <button class="btn btn-danger" th:attr="onclick='deleteStudent(' + ${student.id} + ');'">Delete</button>
       </td>
     </tr>
