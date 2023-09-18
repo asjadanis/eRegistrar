@@ -25,18 +25,20 @@
       <th>CGPA</th>
       <th>Enrollment Date</th>
       <th>Actions</th>
+      <th>Is International</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="student : ${students}">
-      <td th:text="${student.studentId}"></td>
+      <td th:text="${student.id}"></td>
       <td th:text="${student.studentNumber}"></td>
       <td th:text="${student.firstName} + ' ' + ${student.middleName} + ' ' + ${student.lastName}"></td>
-      <td th:text="${student.cgpa}"></td>
-      <td th:text="${student.dateOfEnrollment}"></td>
+      <td th:text="${student.gpa}"></td>
+      <td th:text="${student.enrollmentDate}"></td>
+      <td th:text="${student.isInternational}"></td>
       <td>
-        <button class="btn btn-info" th:onclick="'editStudent(' + ${student.studentId} + ')';">Edit</button>
-        <button class="btn btn-danger" th:onclick="'deleteStudent(' + ${student.studentId} + ')';">Delete</button>
+        <button class="btn btn-danger" th:attr="onclick='updateStudent(' + ${student.id} + ');'">Edit</button>
+        <button class="btn btn-danger" th:attr="onclick='deleteStudent(' + ${student.id} + ');'">Delete</button>
       </td>
     </tr>
     </tbody>
@@ -52,7 +54,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="addStudentForm" th:action="@{/students}" method="post">
+        <form id="addStudentForm" th:action="@{/eregistrar/student}" method="post">
           <div class="form-group">
             <label for="studentNumber">Student Number:</label>
             <input type="text" class="form-control" id="studentNumber" name="studentNumber" required>
@@ -77,6 +79,14 @@
             <label for="dateOfEnrollment">Date of Enrollment:</label>
             <input type="date" class="form-control" id="dateOfEnrollment" name="dateOfEnrollment" required>
           </div>
+          <div class="form-group">
+            <label for="isInternational">Is International Student:</label>
+            <select class="form-control" id="isInternational" name="isInternational" required>
+              <option value="" disabled selected>Select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -91,6 +101,79 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+  // Add a new student
+  function addStudent() {
+    const studentData = {
+      studentNumber: document.getElementById("studentNumber").value,
+      firstName: document.getElementById("firstName").value,
+      middleName: document.getElementById("middleName").value,
+      lastName: document.getElementById("lastName").value,
+      cgpa: document.getElementById("cgpa").value,
+      dateOfEnrollment: document.getElementById("dateOfEnrollment").value,
+      isInternational: document.getElementById("isInternational").value === 'true'
+
+    };
+
+    fetch('/eregistrar/student', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(studentData)
+    }).then(response => response.json())
+            .then(data => {
+              // Handle success
+              // Refresh the table or notify the user
+            })
+            .catch((error) => {
+              // Handle error
+              console.error('Error:', error);
+            });
+  }
+
+  // Edit existing student
+  function editStudent(studentId) {
+    // Fetch the existing student data
+    // Show it in the form
+    // Then call `updateStudent(studentId, newStudentData)` when user submits
+  }
+
+  // Update student data
+  function updateStudent(studentId, newStudentData) {
+    fetch(`/eregistrar/student/${studentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newStudentData)
+    }).then(response => response.json())
+            .then(data => {
+              // Handle success
+            })
+            .catch((error) => {
+              // Handle error
+              console.error('Error:', error);
+            });
+  }
+
+  // Delete a student
+  function deleteStudent(studentId) {
+    fetch(`/eregistrar/student/${studentId}`, {
+      method: 'DELETE'
+    }).then(response => {
+      if (response.ok) {
+        // Handle success - remove student from table
+      } else {
+        // Handle failure
+        console.error('Failed to delete student');
+      }
+    }).catch((error) => {
+      // Handle error
+      console.error('Error:', error);
+    });
+  }
+</script>
 
 </body>
 </html>

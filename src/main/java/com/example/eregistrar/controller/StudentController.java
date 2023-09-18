@@ -31,10 +31,13 @@ public class StudentController {
             List<Student> students = (List<Student>) stdService.getAllStudents();
             model.addAttribute("students", students);
             model.addAttribute("pageTitle", "Students");
+        }else {
+            List<Student> students = (List<Student>) stdService.searchStd(searchStr);
+            model.addAttribute("students", students);
         }
-        List<Student> students = (List<Student>) stdService.searchStd(searchStr);
-        model.addAttribute("students", students);
+
         model.addAttribute("pageTitle", "Students");
+
         return "student";
     }
 
