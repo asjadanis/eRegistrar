@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"> </head>
+<body>
+<div class="container">
+  <nav th:replace="~{fragments/header :: header}"></nav>
+  <main role="main">
+    <div class="welcome">
+      <h1>Welcome to eRegistrar!</h1>
+      <p class="lead">ERegistrar online Student Registration system. <br>Seamlessly plan your studies, register for courses, and track your academic progress with ease.</p>
+    </div>
+  </main>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

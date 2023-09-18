@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Management</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="mb-4">Student Management</h1>
+
+  <!-- Search Bar and Add Button -->
+  <div class="d-flex justify-content-between mb-4">
+    <input type="text" id="searchInput" class="form-control w-50" placeholder="Search students..." th:value="${search}">
+    <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#addStudentModal">Add Student</button>
+  </div>
+
+  <!-- Student Table -->
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Student Number</th>
+      <th>Name</th>
+      <th>CGPA</th>
+      <th>Enrollment Date</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+      <td th:text="${student.studentId}"></td>
+      <td th:text="${student.studentNumber}"></td>
+      <td th:text="${student.firstName} + ' ' + ${student.middleName} + ' ' + ${student.lastName}"></td>
+      <td th:text="${student.cgpa}"></td>
+      <td th:text="${student.dateOfEnrollment}"></td>
+      <td>
+        <button class="btn btn-info" th:onclick="'editStudent(' + ${student.studentId} + ')';">Edit</button>
+        <button class="btn btn-danger" th:onclick="'deleteStudent(' + ${student.studentId} + ')';">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Add New Student</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addStudentForm" th:action="@{/students}" method="post">
+          <div class="form-group">
+            <label for="studentNumber">Student Number:</label>
+            <input type="text" class="form-control" id="studentNumber" name="studentNumber" required>
+          </div>
+          <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="middleName">Middle Name:</label>
+            <input type="text" class="form-control" id="middleName" name="middleName">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+          </div>
+          <div class="form-group">
+            <label for="cgpa">CGPA:</label>
+            <input type="number" class="form-control" id="cgpa" name="cgpa" step="0.01">
+          </div>
+          <div class="form-group">
+            <label for="dateOfEnrollment">Date of Enrollment:</label>
+            <input type="date" class="form-control" id="dateOfEnrollment" name="dateOfEnrollment" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addStudent()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add JavaScript and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

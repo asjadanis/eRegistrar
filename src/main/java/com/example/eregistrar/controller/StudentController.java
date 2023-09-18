@@ -1,0 +1,74 @@
+package com.example.eregistrar.controller;
+
+import com.example.eregistrar.model.Student;
+import com.example.eregistrar.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/eregistrar/student")
+public class StudentController {
+    @Autowired
+    private StudentService stdService;
+
+
+
+
+    @GetMapping("/student")
+    public List<Student> searchStudents(@RequestParam(name = "search", required = false) String searchStr) {
+        if (searchStr == null || searchStr.isEmpty()) {
+            return (List<Student>) stdService.getAllStudents();
+        }
+        return stdService.searchStd(searchStr);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<Student> getStudent(@PathVariable long studentId){
+        Optional<Student> optionalStudent = stdService.getStudentById(studentId);
+
+        if (optionalStudent.isPresent()) {
+            return new ResponseEntity<>(optionalStudent.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/student")
+    public ResponseEntity<Student> addStudent(@RequestBody Student student){
+        stdService.addStudent(student);
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    @PutMapping("/student/{studentId}")
+    public ResponseEntity<Student> updateStudent(@PathVariable Long studentId, @RequestBody Student student){
+        Optional<Student> existingStudent = stdService.getStudentById(studentId);
+
+        if (existingStudent.isPresent()) {
+            stdService.updateStudent(student);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/student/{studentId}")
+    public ResponseEntity<Object> deleteStudent(@PathVariable Long studentId){
+        Optional<Student> existingStudent = stdService.getStudentById(studentId);
+
+        if (existingStudent.isPresent()) {
+            stdService.deleteStudent(studentId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+}
