@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"> </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Home Page</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <body>
-<div class="container">
-  <nav th:replace="~{fragments/header :: header}"></nav>
-  <main role="main">
-    <div class="welcome">
-      <h1>Welcome to eRegistrar!</h1>
-      <p class="lead">ERegistrar online Student Registration system. <br>Seamlessly plan your studies, register for courses, and track your academic progress with ease.</p>
-    </div>
-  </main>
+
+<div class="container mt-5">
+  <h1>Welcome to the Home Page</h1>
+  <p>This is a simple home page built with Thymeleaf and Spring Boot.</p>
+
+  <nav>
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#" th:href="@{/}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" th:href="@{/student}">Students</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" th:href="@{/about}">About</a>
+      </li>
+    </ul>
+  </nav>
 </div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

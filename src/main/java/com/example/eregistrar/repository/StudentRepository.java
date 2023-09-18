@@ -11,3 +11,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.firstName LIKE %:searchStr% OR s.middleName LIKE %:searchStr% OR s.lastName LIKE %:searchStr%")
     List<Student> searchStudents(@Param("searchStr") String searchStr);
 }
+

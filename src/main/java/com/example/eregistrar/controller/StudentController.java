@@ -24,11 +24,17 @@ public class StudentController {
 
 
     @GetMapping("/student")
-    public List<Student> searchStudents(@RequestParam(name = "search", required = false) String searchStr) {
+    public String searchStudents(@RequestParam(name = "search", required = false) String searchStr, Model model) {
+
         if (searchStr == null || searchStr.isEmpty()) {
-            return (List<Student>) stdService.getAllStudents();
+            List<Student> students = (List<Student>) stdService.getAllStudents();
+            model.addAttribute("students", students);
+            model.addAttribute("pageTitle", "Students");
         }
-        return stdService.searchStd(searchStr);
+        List<Student> students = (List<Student>) stdService.searchStd(searchStr);
+        model.addAttribute("students", students);
+        model.addAttribute("pageTitle", "Students");
+        return "students";
     }
 
     @GetMapping("/student/{studentId}")
